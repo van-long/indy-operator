@@ -28,6 +28,7 @@ spec:
               exec:
                 command:
                   - /bin/entrypoint.sh
+          tty: true
           ports:
             - containerPort: {{ $node.client_port }}
             - containerPort: {{ $node.node_port }}
