@@ -1,0 +1,25 @@
+
+{{- range $node := .Values.nodes }}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ $node.alias }}
+  labels:
+    app: {{ $node.alias }}
+    chart: {{ $.Chart.Name }}-{{ $.Chart.Version | replace "+" "_" }}
+    release: {{ $.Release.Name }}
+    heritage: {{ $.Release.Service }}
+    node: {{ $node.alias }}
+spec:
+  externalIPs:
+    - 192.168.1.112
+  ports:
+  - port: {{ $node.node_port }}
+    name: node
+  - port: {{ $node.client_port }}
+    name: client
+  # clusterIP: None
+  selector:
+    app: {{ $node.alias }}
+{{- end }}

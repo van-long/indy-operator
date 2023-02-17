@@ -1,0 +1,103 @@
+HOME=/home/indy
+HOSTNAME=steward1
+KUBERNETES_PORT_443_TCP_ADDR=10.96.0.1
+KUBERNETES_PORT_443_TCP_PORT=443
+KUBERNETES_PORT_443_TCP_PROTO=tcp
+KUBERNETES_PORT_443_TCP=tcp://10.96.0.1:443
+KUBERNETES_PORT=tcp://10.96.0.1:443
+KUBERNETES_SERVICE_HOST=10.96.0.1
+KUBERNETES_SERVICE_PORT=443
+KUBERNETES_SERVICE_PORT_HTTPS=443
+LESSCLOSE=/usr/bin/lesspipe %s %s
+LESSOPEN= | /usr/bin/lesspipe %s
+LS_COLORS=rs=0:di=01
+node=steward1
+PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+PWD=/
+SHLVL=1
+STEWARD1_PORT_9701_TCP_ADDR=10.111.67.205
+STEWARD1_PORT_9701_TCP_PORT=9701
+STEWARD1_PORT_9701_TCP_PROTO=tcp
+STEWARD1_PORT_9701_TCP=tcp://10.111.67.205:9701
+STEWARD1_PORT_9702_TCP_ADDR=10.111.67.205
+STEWARD1_PORT_9702_TCP_PORT=9702
+STEWARD1_PORT_9702_TCP_PROTO=tcp
+STEWARD1_PORT_9702_TCP=tcp://10.111.67.205:9702
+STEWARD1_PORT=tcp://10.111.67.205:9701
+STEWARD1_SERVICE_HOST=10.111.67.205
+STEWARD1_SERVICE_PORT=9701
+STEWARD1_SERVICE_PORT_CLIENT=9702
+STEWARD1_SERVICE_PORT_NODE=9701
+STEWARD2_PORT_9701_TCP_ADDR=10.98.141.168
+STEWARD2_PORT_9701_TCP_PORT=9701
+STEWARD2_PORT_9701_TCP_PROTO=tcp
+STEWARD2_PORT_9701_TCP=tcp://10.98.141.168:9701
+STEWARD2_PORT_9702_TCP_ADDR=10.98.141.168
+STEWARD2_PORT_9702_TCP_PORT=9702
+STEWARD2_PORT_9702_TCP_PROTO=tcp
+STEWARD2_PORT_9702_TCP=tcp://10.98.141.168:9702
+STEWARD2_PORT=tcp://10.98.141.168:9701
+STEWARD2_SERVICE_HOST=10.98.141.168
+STEWARD2_SERVICE_PORT=9701
+STEWARD2_SERVICE_PORT_CLIENT=9702
+STEWARD2_SERVICE_PORT_NODE=9701
+STEWARD3_PORT_9701_TCP_ADDR=10.98.151.241
+STEWARD3_PORT_9701_TCP_PORT=9701
+STEWARD3_PORT_9701_TCP_PROTO=tcp
+STEWARD3_PORT_9701_TCP=tcp://10.98.151.241:9701
+STEWARD3_PORT_9702_TCP_ADDR=10.98.151.241
+STEWARD3_PORT_9702_TCP_PORT=9702
+STEWARD3_PORT_9702_TCP_PROTO=tcp
+STEWARD3_PORT_9702_TCP=tcp://10.98.151.241:9702
+STEWARD3_PORT=tcp://10.98.151.241:9701
+STEWARD3_SERVICE_HOST=10.98.151.241
+STEWARD3_SERVICE_PORT=9701
+STEWARD3_SERVICE_PORT_CLIENT=9702
+STEWARD3_SERVICE_PORT_NODE=9701
+STEWARD4_PORT_9701_TCP_ADDR=10.99.10.167
+STEWARD4_PORT_9701_TCP_PORT=9701
+STEWARD4_PORT_9701_TCP_PROTO=tcp
+STEWARD4_PORT_9701_TCP=tcp://10.99.10.167:9701
+STEWARD4_PORT_9702_TCP_ADDR=10.99.10.167
+STEWARD4_PORT_9702_TCP_PORT=9702
+STEWARD4_PORT_9702_TCP_PROTO=tcp
+STEWARD4_PORT_9702_TCP=tcp://10.99.10.167:9702
+STEWARD4_PORT=tcp://10.99.10.167:9701
+STEWARD4_SERVICE_HOST=10.99.10.167
+STEWARD4_SERVICE_PORT=9701
+STEWARD4_SERVICE_PORT_CLIENT=9702
+STEWARD4_SERVICE_PORT_NODE=9701
+TERM=xterm
+
+#sed "s/{{ $inter_node.alias }}.default.svc.cluster.local/${{ upper $inter_node.alias }}_PORT_9701_TCP_ADDR/" "/var/lib/indy/GC_INDY_NETWORK/pool_transactions_genesis"
+#sed -i "0,/{{ $inter_node.alias }}.default.svc.cluster.local/s//${{ upper $inter_node.alias }}_PORT_9701_TCP_ADDR/" /var/lib/indy/{{ $.Values.network_name }}/pool_transactions_genesis
+#sed -i "0,/{{ $inter_node.alias }}.default.svc.cluster.local/s//${{ upper $inter_node.alias }}_PORT_9702_TCP_ADDR/" /var/lib/indy/{{ $.Values.network_name }}/pool_transactions_genesis
+
+cat <<EOF >"cliconfig.json"
+{
+"taaAcceptanceMechanism": "for_session" 
+}
+EOF
+
+indy-cli --config cliconfig.json
+pool create mainnet gen_txn_file=/var/lib/indy/GC_INDY_NETWORK/pool_transactions_genesis
+pool connect mainnet
+wallet create mainnet_wallet key=abcd@1234
+wallet open mainnet_wallet key=abcd@1234
+did new metadata="LongNV"
+did list
+did use LJjf3RM1b1GNF8eQkr3yDt
+
+ps -eaf
+
+# This is an excerpt
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+labels:
+app.kubernetes.io/name: mysql
+app.kubernetes.io/instance: mysql-abcxzy
+app.kubernetes.io/version: "5.7.21"
+app.kubernetes.io/component: database
+app.kubernetes.io/part-of: wordpress
+app.kubernetes.io/managed-by: helm

@@ -1,0 +1,91 @@
+{{- range $node := .Values.nodes }}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ $node.alias }}
+  labels:
+    app: {{ $node.alias }}
+    chart: {{ $.Chart.Name }}-{{ $.Chart.Version | replace "+" "_" }}
+    release: {{ $.Release.Name }}
+    heritage: {{ $.Release.Service }}
+    node: {{ $node.alias }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: {{ $node.alias }}
+  template:
+    metadata:
+      labels:
+        release: {{ $.Release.Name }}
+        app: {{ $node.alias }}
+        node: {{ $node.alias }}
+      annotations:
+        checksum/config: {{ include (print $.Template.BasePath "/configmap.yaml") $ | sha256sum }}
+    spec:
+      hostname: {{ $node.alias }}
+      containers:
+        - name: {{ $.Chart.Name }}
+          image: longgoid471/schat-indy:v1.0
+          imagePullPolicy: IfNotPresent
+          lifecycle:
+            postStart:
+              exec:
+                command:
+                  - /bin/entrypoint.sh
+          tty: true
+          ports:
+            - containerPort: {{ $node.client_port }}
+            - containerPort: {{ $node.node_port }}
+          env:
+            - name: "node"
+              value: "{{ $node.alias }}"
+            - name: "C_NODE_PORT"
+              value: "{{ $node.node_port }}"
+            - name: "C_CLIENT_PORT"
+              value: "{{ $node.client_port }}"
+          volumeMounts:
+            - name: extdata 
+              mountPath: /extdata
+            - name: config
+              mountPath: /etc/indy/indy_config.py
+              subPath: indy_config.py
+            - name: script-volume
+              mountPath: /bin/entrypoint.sh
+              readOnly: true
+              subPath: entrypoint.sh
+            - name: config
+              mountPath: /etc/indy/indy.env
+              subPath: indy.env-{{ $node.alias }}
+            - name: data
+              mountPath: /var/lib/indy/{{ $.Values.network_name }}
+            - name: genesis
+              mountPath: /var/lib/indy/{{ $.Values.network_name }}/domain_transactions_genesis_readonly
+              subPath: domain_transactions_genesis
+            - name: genesis
+              mountPath: /var/lib/indy/{{ $.Values.network_name }}/pool_transactions_genesis_readonly
+              subPath: pool_transactions_genesis
+            - name: home-indy
+              mountPath: /home/indy
+      volumes:
+        - name: extdata
+          persistentVolumeClaim:
+            claimName: indy-config-vl
+        - name: config
+          configMap:
+            name: indy-config
+        - name: genesis
+          configMap:
+            name: indy-node-cm-genesis
+        - name: script-volume
+          configMap:
+            defaultMode: 0777
+            name: scripts-cm
+        - name: data
+          persistentVolumeClaim:
+            claimName: var-lib-indy-{{ $node.alias }}
+        - name: home-indy
+          persistentVolumeClaim:
+            claimName: home-indy-{{ $node.alias }}
+{{- end }}

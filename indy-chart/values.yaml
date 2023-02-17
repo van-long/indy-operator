@@ -1,0 +1,23 @@
+network_name: GC_INDY_NETWORK
+
+nodes:
+  - alias: steward1
+    client_ip: "steward1"
+    client_port: "9702"
+    node_ip: "steward1"
+    node_port: "9701"
+  - alias: steward2
+    client_ip: "steward2"
+    client_port: "9704"
+    node_ip: "steward2"
+    node_port: "9703"
+  - alias: steward3
+    client_ip: "steward3"
+    client_port: "9706"
+    node_ip: "steward3"
+    node_port: "9705"
+  - alias: steward4
+    client_ip: "steward4"
+    client_port: "9708"
+    node_ip: "steward4"
+    node_port: "9707"

@@ -1,0 +1,62 @@
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: indy-config-vl ### <<< The name as mentioned above in your Deploymnet
+  labels:
+    app: shared-pvc-indy
+spec:
+  # The name of the storage class u defined earlier
+  # storageClassName:  default
+
+  # The access modes are:
+  #   ReadWriteOnce - The volume can be mounted as read-write by a single node
+  #   ReadWriteMany - The volume can be mounted as read-write by a many nodes
+  #   ReadOnlyMany  - The volume can be mounted as read-only  by many nodes
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 1Gi
+      
+{{- range $node := .Values.nodes }}
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: var-lib-indy-{{ $node.alias }} ### <<< The name as mentioned above in your Deploymnet
+  labels:
+    app: shared-pvc-indy
+spec:
+  # The name of the storage class u defined earlier
+  # storageClassName: default
+
+  # The access modes are:
+  #   ReadWriteOnce - The volume can be mounted as read-write by a single node
+  #   ReadWriteMany - The volume can be mounted as read-write by a many nodes
+  #   ReadOnlyMany  - The volume can be mounted as read-only  by many nodes
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 1Gi
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: home-indy-{{ $node.alias }} ### <<< The name as mentioned above in your Deploymnet
+  labels:
+    app: shared-pvc-indy
+spec:
+  # The name of the storage class u defined earlier
+  # storageClassName: default
+
+  # The access modes are:
+  #   ReadWriteOnce - The volume can be mounted as read-write by a single node
+  #   ReadWriteMany - The volume can be mounted as read-write by a many nodes
+  #   ReadOnlyMany  - The volume can be mounted as read-only  by many nodes
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+{{- end}}
