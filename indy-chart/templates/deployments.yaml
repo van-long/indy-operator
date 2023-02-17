@@ -6,10 +6,6 @@ metadata:
   name: {{ $node.alias }}
   labels:
     app: {{ $node.alias }}
-    chart: {{ $.Chart.Name }}-{{ $.Chart.Version | replace "+" "_" }}
-    release: {{ $.Release.Name }}
-    heritage: {{ $.Release.Service }}
-    node: {{ $node.alias }}
 spec:
   replicas: 1
   selector:
@@ -18,9 +14,7 @@ spec:
   template:
     metadata:
       labels:
-        release: {{ $.Release.Name }}
         app: {{ $node.alias }}
-        node: {{ $node.alias }}
       annotations:
         checksum/config: {{ include (print $.Template.BasePath "/configmap.yaml") $ | sha256sum }}
     spec:
@@ -34,7 +28,6 @@ spec:
               exec:
                 command:
                   - /bin/entrypoint.sh
-          tty: true
           ports:
             - containerPort: {{ $node.client_port }}
             - containerPort: {{ $node.node_port }}

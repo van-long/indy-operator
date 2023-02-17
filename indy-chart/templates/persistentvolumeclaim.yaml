@@ -35,7 +35,7 @@ spec:
   #   ReadWriteMany - The volume can be mounted as read-write by a many nodes
   #   ReadOnlyMany  - The volume can be mounted as read-only  by many nodes
   accessModes:
-    - ReadWriteMany
+    - ReadWriteOnce
   resources:
     requests:
       storage: 1Gi
