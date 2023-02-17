@@ -48,7 +48,7 @@ metadata:
     app: shared-pvc-indy
 spec:
   # The name of the storage class u defined earlier
-   storageClassName: nfs-client
+  storageClassName: nfs-client
 
   # The access modes are:
   #   ReadWriteOnce - The volume can be mounted as read-write by a single node
