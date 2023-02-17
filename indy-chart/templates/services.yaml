@@ -15,5 +15,5 @@ spec:
     name: client
   # clusterIP: None
   selector:
-    app: {{ $node.alias }}
+    app: {{ $node.alias }}-{{ $.Release.Revision }}
 {{- end }}

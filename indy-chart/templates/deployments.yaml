@@ -4,19 +4,17 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: {{ $node.alias }}
-  labels:
-    app: {{ $node.alias }}
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: {{ $node.alias }}
+      app: {{ $node.alias }}-{{ $.Release.Revision }}
   template:
     metadata:
       labels:
-        app: {{ $node.alias }}
-      annotations:
-        checksum/config: {{ include (print $.Template.BasePath "/configmap.yaml") $ | sha256sum }}
+        app: {{ $node.alias }}-{{ $.Release.Revision }}
+      # annotations:
+      #   checksum/config: {{ include (print $.Template.BasePath "/configmap.yaml") $ | sha256sum }}
     spec:
       hostname: {{ $node.alias }}
       containers:
