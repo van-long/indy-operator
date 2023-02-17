@@ -13,8 +13,8 @@ spec:
     metadata:
       labels:
         app: {{ $node.alias }}
-      annotations:
-        checksum/config: {{ include (print $.Template.BasePath "/configmap.yaml") $ | sha256sum }}
+      # annotations:
+      #   checksum/config: {{ include (print $.Template.BasePath "/configmap.yaml") $ | sha256sum }}
     spec:
       hostname: {{ $node.alias }}
       containers:
