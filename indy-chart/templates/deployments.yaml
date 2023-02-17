@@ -8,13 +8,13 @@ spec:
   replicas: 1
   selector:
     matchLabels:
-      app: {{ $node.alias }}-{{ $.Release.Revision }}
+      app: {{ $node.alias }}
   template:
     metadata:
       labels:
-        app: {{ $node.alias }}-{{ $.Release.Revision }}
-      # annotations:
-      #   checksum/config: {{ include (print $.Template.BasePath "/configmap.yaml") $ | sha256sum }}
+        app: {{ $node.alias }}
+      annotations:
+        checksum/config: {{ include (print $.Template.BasePath "/configmap.yaml") $ | sha256sum }}
     spec:
       hostname: {{ $node.alias }}
       containers:
