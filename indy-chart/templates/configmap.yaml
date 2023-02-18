@@ -86,3 +86,5 @@ data:
     {{- end }}
     start_indy_node $node 0.0.0.0 $C_NODE_PORT 0.0.0.0 $C_CLIENT_PORT &
     {{ end }}
+
+    sh -c tail -f /dev/null
