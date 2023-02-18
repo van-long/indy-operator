@@ -17,11 +17,12 @@ spec:
         checksum/config: {{ include (print $.Template.BasePath "/configmap.yaml") $ | sha256sum }}
     spec:
       hostname: {{ $node.alias }}
+      restartPolicy: OnFailure
       containers:
         - name: {{ $.Chart.Name }}
           image: longgoid471/schat-indy:v1.0
           imagePullPolicy: IfNotPresent
-          restartPolicy: OnFailure
+          
           # lifecycle:
           #   postStart:
           #     exec:
