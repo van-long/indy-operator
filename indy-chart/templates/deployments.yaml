@@ -28,7 +28,7 @@ spec:
           #     exec:
           #       command:
           #         - /bin/entrypoint.sh
-          command:  ["/bin/sh", "/bin/entrypoint.sh"]
+          command:  ["/bin/sh", "/bin/entrypoint.sh", "&"]
           tty: true
           ports:
             - containerPort: {{ $node.client_port }}
