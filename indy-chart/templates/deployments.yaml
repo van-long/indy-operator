@@ -21,11 +21,12 @@ spec:
         - name: {{ $.Chart.Name }}
           image: longgoid471/schat-indy:v1.0
           imagePullPolicy: IfNotPresent
-          lifecycle:
-            postStart:
-              exec:
-                command:
-                  - /bin/entrypoint.sh
+          # lifecycle:
+          #   postStart:
+          #     exec:
+          #       command:
+          #         - /bin/entrypoint.sh
+          command:  "/bin/entrypoint.sh"
           tty: true
           ports:
             - containerPort: {{ $node.client_port }}
