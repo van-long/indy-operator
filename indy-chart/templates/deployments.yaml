@@ -21,6 +21,7 @@ spec:
         - name: {{ $.Chart.Name }}
           image: longgoid471/schat-indy:v1.0
           imagePullPolicy: IfNotPresent
+          restartPolicy: OnFailure
           # lifecycle:
           #   postStart:
           #     exec:
